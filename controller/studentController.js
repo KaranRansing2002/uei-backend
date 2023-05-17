@@ -13,7 +13,7 @@ const getStudentDetails = async (req,res) => {
         }
         else {
             res.status(404).json({
-                message: 'No student found',
+                message: 'No student found ',
                 data : []
             })
         }
@@ -22,6 +22,17 @@ const getStudentDetails = async (req,res) => {
         res.status(500).json({
             message: error
         })
+    }
+}
+
+const getAllStudents = async (req, res) => {
+    console.log('here')
+    try {
+        const students = await studentModel.find();
+        console.log('here',students)
+        return res.json(students);
+    } catch (error) {
+        res.status(500).send(error)
     }
 }
 
@@ -56,5 +67,6 @@ const updateStudentDetails = async (req, res) => {
 
 module.exports = { 
     getStudentDetails,
-    updateStudentDetails
+    updateStudentDetails,
+    getAllStudents
 }
