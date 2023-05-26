@@ -11,10 +11,7 @@ mongoose.connect(db_link)
 const projectSchema = new mongoose.Schema({
     uid: String,
     dsa: [
-        {
-            platform: String,
-            usernames : Array
-        }
+      {},
     ],
     frameworks: Array,
     languages: Array,
