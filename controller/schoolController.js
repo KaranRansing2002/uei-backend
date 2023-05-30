@@ -38,7 +38,7 @@ const getSchoolDetails = async(req, res) => {
             })
         }
         else {
-            res.json({
+            res.status(204).json({
                 message: 'No record found',
                 data : []
             })

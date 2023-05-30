@@ -10,6 +10,7 @@ const { studentRouter } = require('./routers/studentRouter');
 const instituteRouter = require('./routers/instituteRouter');
 const projectRouter = require('./routers/projectRouter');
 const workRouter = require('./routers/workRouter');
+const dashRouter = require('./routers/dashRouter');
 
 app.use(cors())
 app.use(express.json({ limit: '400kb' }));
@@ -37,7 +38,7 @@ app.get('/signin', async(req, res) => {
       }
     })
     const user = response.data;
-    console.log(user);
+    // console.log(user);
     const student = await handleSave(user);
     // console.log(student);
     res.json(student);
@@ -69,7 +70,8 @@ app.use('/school', schoolRouter)
 app.use('/student', studentRouter)
 app.use('/institute', instituteRouter)
 app.use('/project', projectRouter)
-app.use('/work',workRouter)
+app.use('/work', workRouter)
+app.use('/dashboard',dashRouter)
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
