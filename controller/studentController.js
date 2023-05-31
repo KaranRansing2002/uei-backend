@@ -123,10 +123,60 @@ const updateAdditionalInfo = async (req, res) => {
     }
 };
 
+const addCerticates = async (req,res) => {
+    try {
+        const id = req.params.id;
+        const details = req.body;
+        const stud = await studentModel.findOne({ uid: id }).select('additionalInfo');
+        if (stud.additionalInfo.certificates) {
+            stud.additionalInfo = {
+                ...stud.additionalInfo,
+                certificates: [{ ...details }, ...stud.additionalInfo.certificates]
+            }
+        }
+        else {
+            stud.additionalInfo = {
+                ...stud.additionalInfo,
+                certificates: [{ ...details }]
+            }
+        }
+        await stud.save();
+        return res.json({
+            message: 'certificate added !',
+            resp: stud.additionalInfo.certificates
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+const getCertificates = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const stud = await studentModel.findOne({ uid: id }).select('additionalInfo');
+        console.log(stud);
+        const certificates = stud.additionalInfo.certificates;
+        if (certificates === undefined) {
+            return res.status(204).json({
+                message : 'No data'
+            })
+        }
+        return res.json({
+            resp: certificates
+        })
+    } catch (error) {   
+        res.status(500).json(error)
+    }
+}
+
 
 module.exports = { 
     getStudentDetails,
     updateStudentDetails,
     getAllStudents,
-    updateAdditionalInfo
+    updateAdditionalInfo,
+    getCertificates,
+    addCerticates
 }

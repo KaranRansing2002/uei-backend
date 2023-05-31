@@ -4,7 +4,7 @@ const addWorkDetails = async (req, res) => {
     try {
         const details = req.body;
         console.log(details);
-        const work = await workModel.findOne({ uid: details.uid });
+        const work = await workModel.find({ uid: details.uid });
         if (work) {
             await workModel.updateOne({ uid: details.uid }, details);
             res.json({
@@ -37,7 +37,7 @@ const getWorkDetails = async (req, res) => {
             })
         }
         else {
-            res.json({
+            res.status(204).json({
                 message: 'No record found',
             })
         }

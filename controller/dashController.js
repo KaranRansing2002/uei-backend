@@ -4,6 +4,32 @@ const workModel = require('../models/workModel');
 const studentModel = require('../models/studentModel');
 const projectModel = require('../models/projectModel');
 
+const addRecentAchievements = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const details = req.body;
+        const stud = await studentModel.findOne({ uid: id }).select('additionalInfo');
+        if (!stud.additionalInfo.recentAchievements) {
+            stud.additionalInfo = {
+                ...stud['additionalInfo'],
+                recentAchievements: [{ ...details }]
+            }
+        }
+        else {
+            stud.additionalInfo = {
+                ...stud['additionalInfo'],
+                recentAchievements: [...stud['additionalInfo'].recentAchievements,{ ...details }]
+            }
+        }
+        await stud.save();
+        return res.json(stud.additionalInfo.recentAchievements);
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
 const getDashInfo = async (req, res) => {
     try {
         const { id } = req.params;
@@ -61,16 +87,18 @@ const getDashInfo = async (req, res) => {
         
         if (!stud.additionalInfo.recentAchievements) {
             stud.additionalInfo = {
-                ...stud['additionalInfo']
+                ...stud['additionalInfo'],
+                recentAchievements : []
             }
+            await stud.save();
         }
 
         const middle = {
             lineDataSem,
-            lineDataYear
+            lineDataYear,
+            recentAchievements: stud.additionalInfo.recentAchievements 
         }
-
-    
+        console.log(middle);
 
         return res.json({
             upper,
@@ -86,5 +114,6 @@ const getDashInfo = async (req, res) => {
 };
 
 module.exports = {
-    getDashInfo
+    getDashInfo,
+    addRecentAchievements
 };
