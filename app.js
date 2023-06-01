@@ -11,6 +11,7 @@ const instituteRouter = require('./routers/instituteRouter');
 const projectRouter = require('./routers/projectRouter');
 const workRouter = require('./routers/workRouter');
 const dashRouter = require('./routers/dashRouter');
+const organisationRouter = require('./routers/organisationRouter');
 
 app.use(cors())
 app.use(express.json({ limit: '400kb' }));
@@ -71,7 +72,8 @@ app.use('/student', studentRouter)
 app.use('/institute', instituteRouter)
 app.use('/project', projectRouter)
 app.use('/work', workRouter)
-app.use('/dashboard',dashRouter)
+app.use('/dashboard', dashRouter)
+app.use('/organisation',organisationRouter)
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
