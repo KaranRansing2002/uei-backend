@@ -1,18 +1,38 @@
 const projectModel = require('../models/projectModel');
+const studentModel = require('../models/studentModel');
 
 const addProjectDetails = async (req, res) => {
     try {
         const details = req.body;
         console.log(details);
         const project = await projectModel.findOne({ uid: details.uid });
+        // console.log(details)
         if (project) {
             await projectModel.updateOne({ uid: details.uid }, details);
+            if (details.githubusername != '') {
+                const stud = await studentModel.findOne({ uid: details.uid });
+                console.log("github")
+                stud['additionalInfo'] = {
+                    ...stud['additionalInfo'],
+                    github : `https://github.com/${details.githubusername}`
+                }
+                await stud.save();
+            }
             res.json({
                 message : "data updated successfully"
             })
         }
         else {
             await projectModel.create(details);
+            if (details.githubusername != '') {
+                const stud = await studentModel.findOne({ uid: details.uid });
+                console.log("github")
+                stud['additionalInfo'] = {
+                    ...stud['additionalInfo'],
+                    github : `https://github.com/${details.githubusername}`
+                }
+                await stud.save();
+            }
             res.json({
                 message : 'data created successfully'
             })
