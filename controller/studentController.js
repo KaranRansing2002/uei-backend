@@ -3,7 +3,8 @@ const studentModel = require('../models/studentModel')
 const getStudentDetails = async (req,res) => {
     try {
         const id = req.params.id;
-        const resp = await studentModel.findOne({ uid: id });
+        // console.log(id,typeof id);
+        const resp = await studentModel.findOne({ uid: id }) || await studentModel.findOne({username : id}) ;
         // console.log(id,resp); 
         if (resp) {
             res.json({
