@@ -86,3 +86,5 @@ app.use((error, req, res, next) => {
   const message = error.message || 'Internal server error';
   res.status(status).send(message);
 })
+
+module.exports = app;
